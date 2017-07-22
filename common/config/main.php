@@ -10,6 +10,7 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+//            'enableStrictParsing' => false,
             'rules' => [
                 '<module>/<controller:\w+>/<id:\d+>' => '<module>/<controller>/index',
                 '<module>/<controller>/<action>' => '<module>/<controller>/<action>',
