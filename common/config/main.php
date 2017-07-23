@@ -1,7 +1,7 @@
 <?php
 return [
     'name' => 'MyHomeBudget App Dev',
-
+    'language' => 'ru-RU',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
@@ -12,8 +12,8 @@ return [
             'showScriptName' => false,
 //            'enableStrictParsing' => false,
             'rules' => [
-                '<module>/<controller:\w+>/<id:\d+>' => '<module>/<controller>/index',
-                '<module>/<controller>/<action>' => '<module>/<controller>/<action>',
+//                '<module>/<controller:\w+>/<id:\d+>' => '<module>/<controller>/index',
+//                '<module>/<controller>/<action>' => '<module>/<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
