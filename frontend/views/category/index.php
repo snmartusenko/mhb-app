@@ -3,32 +3,45 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use common\models\helpers\Helper;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\CategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Categories';
+$this->title = 'Категории';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-index">
 
+    <p>
+        <?= Html::a('Создать новую категорию', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'name',
-            'status',
-            'created_at',
-
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->getStatusLabel();
+                }
+            ],
+            [
+                'attribute' => 'created_at',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Helper::getDate($model->created_at);
+                }
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
