@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use common\models\helpers\Helper;
 
 /**
  * This is the model class for table "account".
@@ -86,14 +87,7 @@ class Account extends ActiveRecord
      */
     public function getStatusLabel()
     {
-        switch ($this->status) {
-            case self::STATUS_ACTIVE_VALUE:
-                return self::STATUS_ACTIVE_LABEL;
-            case self::STATUS_DELETED_VALUE:
-                return self::STATUS_DELETED_LABEL;
-            default:
-                return null;
-        }
+        return Helper::getModelStatusLabel($this);
     }
 
 }

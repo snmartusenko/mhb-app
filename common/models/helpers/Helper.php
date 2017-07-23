@@ -9,6 +9,7 @@
 namespace common\models\helpers;
 
 use Yii;
+use yii\base\Model;
 
 class Helper
 {
@@ -23,5 +24,20 @@ class Helper
         Yii::$app->formatter->locale = 'ru-RU';
         return Yii::$app->formatter->asDatetime($date, "php:l, d.m.Y");
 //        return Yii::$app->formatter->asDate($date, 'l,  d.MM.Y');
+    }
+
+    /**
+     * @return null|string
+     */
+    public static function getModelStatusLabel(Model $model)
+    {
+        switch ($model->status) {
+            case $model::STATUS_ACTIVE_VALUE:
+                return $model::STATUS_ACTIVE_LABEL;
+            case $model::STATUS_DELETED_VALUE:
+                return $model::STATUS_DELETED_LABEL;
+            default:
+                return null;
+        }
     }
 }
