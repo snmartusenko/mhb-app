@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "account".
@@ -14,8 +16,15 @@ use Yii;
  *
  * @property Transaction[] $transactions
  */
-class Account extends \yii\db\ActiveRecord
+class Account extends ActiveRecord
 {
+    const STATUS_ACTIVE_VALUE = 10;
+//    const STATUS_INV = 5;
+    const STATUS_DELETED_VALUE = 0;
+
+    const STATUS_ACTIVE_LABEL = 'Активный';
+    const STATUS_DELETED_LABEL = 'Удаленный';
+
     /**
      * @inheritdoc
      */
@@ -24,16 +33,30 @@ class Account extends \yii\db\ActiveRecord
         return 'account';
     }
 
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                ],
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['name', 'created_at'], 'required'],
+            [['name'], 'required'],
             [['status', 'created_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['name'], 'unique'],
+            [['name'], 'unique', 'message' => 'Это имя уже используется'],
+            ['status', 'default', 'value' => self::STATUS_ACTIVE_VALUE],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE_VALUE, self::STATUS_DELETED_VALUE]],
         ];
     }
 
@@ -44,9 +67,9 @@ class Account extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'status' => 'Status',
-            'created_at' => 'Created At',
+            'name' => 'Имя',
+            'status' => 'Статус',
+            'created_at' => 'Создан',
         ];
     }
 
@@ -57,4 +80,20 @@ class Account extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Transaction::className(), ['account_id' => 'id']);
     }
+
+    /**
+     * @return null|string
+     */
+    public function getStatusLabel()
+    {
+        switch ($this->status) {
+            case self::STATUS_ACTIVE_VALUE:
+                return self::STATUS_ACTIVE_LABEL;
+            case self::STATUS_DELETED_VALUE:
+                return self::STATUS_DELETED_LABEL;
+            default:
+                return null;
+        }
+    }
+
 }
