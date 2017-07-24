@@ -3,11 +3,13 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use common\models\helpers\Helper;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\OperationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Operations';
+$this->title = 'Операции';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="operation-index">
@@ -16,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Operation', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать операцию', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,11 +26,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'name',
-            'status',
-            'created_at',
-
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->getStatusLabel();
+                }
+            ],
+            [
+                'attribute' => 'created_at',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Helper::getDate($model->created_at);
+                }
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

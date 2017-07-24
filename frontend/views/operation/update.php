@@ -3,12 +3,12 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Operation */
+/* @var $model common\models\Account */
 
-$this->title = 'Update Operation: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Operations', 'url' => ['index']];
+$this->title = 'Обновить операцию: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Операции', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Обновить';
 ?>
 <div class="operation-update">
 
