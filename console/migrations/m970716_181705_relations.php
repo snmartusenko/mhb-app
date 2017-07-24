@@ -39,6 +39,10 @@ class m970716_181705_relations extends Migration
         //transaction->user
         $this->createIndex('fk_transaction_user_idx', '{{%transaction}}', 'user_id');
         $this->addForeignKey('fk_transaction_user', '{{%transaction}}', 'user_id', '{{%user}}', 'id');
+
+        //category->operation
+        $this->createIndex('fk_category_operation_idx', '{{%category}}', 'operation_id');
+        $this->addForeignKey('fk_category_operation', '{{%category}}', 'operation_id', '{{%operation}}', 'id');
     }
 
     public function down()
@@ -66,5 +70,9 @@ class m970716_181705_relations extends Migration
         //transaction->user
         $this->dropForeignKey('fk_transaction_user', '{{%transaction}}');
         $this->dropIndex('fk_transaction_user_idx', '{{%transaction}}');
+
+        //category->operation
+        $this->dropForeignKey('fk_category_operation', '{{%category}}');
+        $this->dropIndex('fk_category_operation_idx', '{{%category}}');
     }
 }

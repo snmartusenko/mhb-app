@@ -24,7 +24,8 @@ class m170716_174633_category extends Migration
 
         $this->createTable('category', [
             'id' => $this->primaryKey(),
-            'name' => $this->string()->notNull()->unique(),
+            'operation_id' => $this->integer()->notNull(),
+            'name' => $this->string()->notNull(),
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'created_at' => $this->integer()->notNull(),
         ], $tableOptions);
