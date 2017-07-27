@@ -11,13 +11,15 @@ use common\models\helpers\Helper;
  * This is the model class for table "category".
  *
  * @property integer $id
+ * @property integer $operation_id
  * @property string $name
  * @property integer $status
  * @property integer $created_at
  *
  * @property Transaction[] $transactions
+ * @property Operation $operation
  */
-class Category extends \yii\db\ActiveRecord
+class Category extends ActiveRecord
 {
     const STATUS_ACTIVE_VALUE = 10;
 //    const STATUS_INV = 5;
@@ -52,10 +54,11 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['status', 'created_at'], 'integer'],
+            [['name', 'operation_id'], 'required'],
+            [['operation_id', 'status', 'created_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['name'], 'unique', 'message' => 'Это имя уже используется'],
+//            [['name'], 'unique', 'message' => 'Это имя уже используется'],
+            [['name'], 'unique', 'targetAttribute' => ['name', 'operation_id'], 'message' => 'Это имя уже используется'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE_VALUE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE_VALUE, self::STATUS_DELETED_VALUE]],
         ];
@@ -68,7 +71,8 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Имя',
+            'operation_id' => 'Тип операции',
+            'name' => 'Наименование',
             'status' => 'Статус',
             'created_at' => 'Создана',
         ];
@@ -80,6 +84,14 @@ class Category extends \yii\db\ActiveRecord
     public function getTransactions()
     {
         return $this->hasMany(Transaction::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOperation()
+    {
+        return $this->hasOne(Operation::className(), ['id' => 'operation_id']);
     }
 
     /**

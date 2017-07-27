@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Account */
 
 $this->title = 'Обновить категорию: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Счета', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Категории', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Обновить';
 ?>

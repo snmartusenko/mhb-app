@@ -1,7 +1,9 @@
 <?php
 
+use common\models\Operation;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Category */
@@ -14,10 +16,24 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?php
+        $operations = Operation::find()
+            ->where(['id' => 1])
+            ->orWhere(['id' => 2])
+            ->all();
+        $operationItems = ArrayHelper::map($operations, 'id', 'name');
+    ?>
+
+    <?= $form->field($model, 'operation_id')->dropDownList($operationItems,
+        [
+            'prompt' => 'Выберите тип операции ...',
+        ])
+    ?>
+
     <?= $form->field($model, 'status')->dropDownList(
         [
-            \common\models\Account::STATUS_ACTIVE_VALUE => 'Активный' ,
-            \common\models\Account::STATUS_DELETED_VALUE => 'Удаленный',
+            $model::STATUS_ACTIVE_VALUE => $model::STATUS_ACTIVE_LABEL,
+            $model::STATUS_DELETED_VALUE => $model::STATUS_DELETED_LABEL,
         ],
         [
 //            'prompt' => 'Выберите статус ...',

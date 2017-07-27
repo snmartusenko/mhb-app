@@ -34,6 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            [
+                'label' => 'Тип операции',
+                'value' => function ($model) {
+                    return $model->operation->name;
+                }
+            ],
             'name',
             [
                 'attribute' => 'status',
