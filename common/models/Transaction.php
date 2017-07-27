@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use common\models\helpers\Helper;
 
 /**
  * This is the model class for table "transaction".
@@ -35,13 +38,25 @@ class Transaction extends \yii\db\ActiveRecord
         return 'transaction';
     }
 
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                ],
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['date', 'operation_id', 'category_id', 'account_id', 'value', 'currency_id', 'user_id', 'created_at'], 'required'],
+            [['date', 'operation_id', 'category_id', 'account_id', 'value', 'currency_id', 'user_id'], 'required'],
             [['date'], 'safe'],
             [['operation_id', 'category_id', 'account_id', 'value', 'currency_id', 'contragent_id', 'user_id', 'created_at'], 'integer'],
             [['date'], 'unique'],
@@ -61,15 +76,15 @@ class Transaction extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'date' => 'Date',
-            'operation_id' => 'Operation ID',
-            'category_id' => 'Category ID',
-            'account_id' => 'Account ID',
-            'value' => 'Value',
-            'currency_id' => 'Currency ID',
-            'contragent_id' => 'Contragent ID',
-            'user_id' => 'User ID',
-            'created_at' => 'Created At',
+            'date' => 'Дата',
+            'operation_id' => 'Операция',
+            'category_id' => 'Категория',
+            'account_id' => 'Счет',
+            'value' => 'Сумма',
+            'currency_id' => 'Валюта',
+            'contragent_id' => 'Контрагент',
+            'user_id' => 'Пользователь',
+            'created_at' => 'Создана',
         ];
     }
 
