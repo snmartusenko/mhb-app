@@ -59,7 +59,14 @@ class Transaction extends \yii\db\ActiveRecord
             [['date', 'operation_id', 'category_id', 'account_id', 'value', 'currency_id', 'user_id'], 'required'],
             [['date'], 'safe'],
             [['operation_id', 'category_id', 'account_id', 'value', 'currency_id', 'contragent_id', 'user_id', 'created_at'], 'integer'],
-            [['date'], 'unique'],
+            [['date'], 'filter', 'filter' => function ($value) {
+                if(!preg_match("/^[\d\+]+$/",$value) && $value > 0){
+                    return strtotime($value);
+                }
+                else{
+                    return $value;
+                }
+            }],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['account_id'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
@@ -68,6 +75,16 @@ class Transaction extends \yii\db\ActiveRecord
             [['operation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Operation::className(), 'targetAttribute' => ['operation_id' => 'id']],
         ];
     }
+
+//    public function beforeSave($insert)
+//    {
+//        if(parent::beforeSave($insert)){
+//
+//            $this->date = strtotime($this->date);
+//        }
+//
+//        return true;
+//    }
 
     /**
      * @inheritdoc
