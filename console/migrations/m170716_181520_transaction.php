@@ -25,7 +25,7 @@ class m170716_181520_transaction extends Migration
         $this->createTable('transaction', [
             'id' => $this->primaryKey(),
 
-            'date' => $this->dateTime()->notNull()->unique(),
+            'date' => $this->integer()->notNull(),
             'operation_id' => $this->integer()->notNull(),
             'category_id' => $this->integer()->notNull(),
             'account_id' => $this->integer()->notNull(),

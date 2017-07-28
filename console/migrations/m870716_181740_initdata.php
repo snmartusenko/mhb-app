@@ -31,9 +31,9 @@ class m870716_181740_initdata extends Migration
         Yii::$app->db->createCommand()->batchInsert('account',
             ['id', 'name', 'status', 'created_at'],
             [
-                [1, 'Муж', 10, 1500708122],
-                [2, 'Жена', 10, 1500708122],
-                [3, 'Копилка', 10, 1500708122],
+                [1, 'Счет1', 10, 1500708122],
+                [2, 'Счет2', 10, 1500708122],
+                [3, 'Счет3', 10, 1500708122],
             ])->execute();
 
         Yii::$app->db->createCommand()->batchInsert('category',
