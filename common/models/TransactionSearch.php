@@ -18,7 +18,8 @@ class TransactionSearch extends Transaction
     public function rules()
     {
         return [
-            [['id', 'operation_id', 'category_id', 'account_id', 'value', 'currency_id', 'contragent_id', 'user_id', 'created_at'], 'integer'],
+            [['id', 'operation_id', 'category_id', 'account_id_from', 'account_id_to',
+                'value', 'currency_id', 'contragent_id', 'user_id', 'created_at'], 'integer'],
             [['date'], 'safe'],
         ];
     }
@@ -63,7 +64,8 @@ class TransactionSearch extends Transaction
             'date' => $this->date,
             'operation_id' => $this->operation_id,
             'category_id' => $this->category_id,
-            'account_id' => $this->account_id,
+            'account_id_from' => $this->account_id_from,
+            'account_id_to' => $this->account_id_to,
             'value' => $this->value,
             'currency_id' => $this->currency_id,
             'contragent_id' => $this->contragent_id,

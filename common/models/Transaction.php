@@ -14,7 +14,8 @@ use common\models\helpers\Helper;
  * @property string $date
  * @property integer $operation_id
  * @property integer $category_id
- * @property integer $account_id
+ * @property integer $account_id_from
+ * @property integer $account_id_to
  * @property integer $value
  * @property integer $currency_id
  * @property integer $contragent_id
@@ -22,7 +23,8 @@ use common\models\helpers\Helper;
  * @property integer $created_at
  *
  * @property User $user
- * @property Account $account
+ * @property Account $accountFrom
+ * @property Account $accountTo
  * @property Category $category
  * @property Contragent $contragent
  * @property Currency $currency
@@ -56,19 +58,22 @@ class Transaction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date', 'operation_id', 'category_id', 'account_id', 'value', 'currency_id', 'user_id'], 'required'],
+            [['date', 'operation_id', 'category_id', 'value', 'currency_id', 'user_id'], 'required'],
             [['date'], 'safe'],
-            [['operation_id', 'category_id', 'account_id', 'value', 'currency_id', 'contragent_id', 'user_id', 'created_at'], 'integer'],
+            [['operation_id', 'category_id', 'account_id_from', 'account_id_to',
+                'value', 'currency_id', 'contragent_id', 'user_id', 'created_at'], 'integer'],
+
             [['date'], 'filter', 'filter' => function ($value) {
-                if(!preg_match("/^[\d\+]+$/",$value) && $value > 0){
+                if (!preg_match("/^[\d\+]+$/", $value) && $value > 0) {
                     return strtotime($value);
-                }
-                else{
+                } else {
                     return $value;
                 }
             }],
+
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['account_id'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id' => 'id']],
+            [['account_id_from'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id_from' => 'id']],
+            [['account_id_to'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id_to' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['contragent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contragent::className(), 'targetAttribute' => ['contragent_id' => 'id']],
             [['currency_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
@@ -96,7 +101,8 @@ class Transaction extends \yii\db\ActiveRecord
             'date' => 'Дата',
             'operation_id' => 'Операция',
             'category_id' => 'Категория',
-            'account_id' => 'Счет',
+            'account_id_from' => 'Счет откуда',
+            'account_id_to' => 'Счет куда',
             'value' => 'Сумма',
             'currency_id' => 'Валюта',
             'contragent_id' => 'Контрагент',
@@ -116,9 +122,17 @@ class Transaction extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccount()
+    public function getAccountFrom()
     {
-        return $this->hasOne(Account::className(), ['id' => 'account_id']);
+        return $this->hasOne(Account::className(), ['id' => 'account_id_from']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccountTo()
+    {
+        return $this->hasOne(Account::className(), ['id' => 'account_id_to']);
     }
 
     /**

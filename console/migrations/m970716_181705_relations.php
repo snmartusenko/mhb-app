@@ -25,8 +25,10 @@ class m970716_181705_relations extends Migration
         $this->addForeignKey('fk_transaction_category', '{{%transaction}}', 'category_id', '{{%category}}', 'id');
 
         //transaction->account
-        $this->createIndex('fk_transaction_account_idx', '{{%transaction}}', 'account_id');
-        $this->addForeignKey('fk_transaction_account', '{{%transaction}}', 'account_id', '{{%account}}', 'id');
+        $this->createIndex('fk_transaction_from_account_idx', '{{%transaction}}', 'account_id_from');
+        $this->addForeignKey('fk_transaction_from_account', '{{%transaction}}', 'account_id_from', '{{%account}}', 'id');
+        $this->createIndex('fk_transaction_to_account_idx', '{{%transaction}}', 'account_id_to');
+        $this->addForeignKey('fk_transaction_to_account', '{{%transaction}}', 'account_id_to', '{{%account}}', 'id');
 
         //transaction->currency
         $this->createIndex('fk_transaction_currency_idx', '{{%transaction}}', 'currency_id');
@@ -56,8 +58,10 @@ class m970716_181705_relations extends Migration
         $this->dropIndex('fk_transaction_category_idx', '{{%transaction}}');
 
         //transaction->account
-        $this->dropForeignKey('fk_transaction_account', '{{%transaction}}');
-        $this->dropIndex('fk_transaction_account_idx', '{{%transaction}}');
+        $this->dropForeignKey('fk_transaction_from_account', '{{%transaction}}');
+        $this->dropIndex('fk_transaction_from_account_idx', '{{%transaction}}');
+        $this->dropForeignKey('fk_transaction_to_account', '{{%transaction}}');
+        $this->dropIndex('fk_transaction_to_account_idx', '{{%transaction}}');
 
         //transaction->currency
         $this->dropForeignKey('fk_transaction_currency', '{{%transaction}}');
