@@ -26,6 +26,14 @@ class Operation extends \yii\db\ActiveRecord
     const STATUS_ACTIVE_LABEL = 'Активная';
     const STATUS_DELETED_LABEL = 'Удаленная';
 
+    const TYPE_INCOME_VALUE = 1;
+    const TYPE_EXPENSE_VALUE = 2;
+    const TYPE_TRANSFER_VALUE = 3;
+
+    const TYPE_INCOME_LABEL = 'Приход';
+    const TYPE_EXPENSE_LABEL = 'Расход';
+    const TYPE_TRANSFER_LABEL = 'Перемещение';
+
     public function behaviors()
     {
         return [

@@ -66,7 +66,7 @@ class m870716_181740_initdata extends Migration
         Yii::$app->db->createCommand()->batchInsert('operation',
             ['id', 'name', 'status', 'created_at'],
             [
-                [1, 'Доход', 10, 1500708122],
+                [1, 'Приход', 10, 1500708122],
                 [2, 'Расход', 10, 1500708122],
                 [3, 'Перемещение', 10, 1500708122],
             ])->execute();
