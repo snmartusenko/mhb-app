@@ -7,9 +7,10 @@ use common\models\Currency;
 use common\models\Contragent;
 use common\models\User;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\datetime\DateTimePicker;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Transaction */
@@ -18,7 +19,26 @@ use kartik\datetime\DateTimePicker;
 
 <div class="transaction-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['class' => 'form-horizontal'],
+        'fieldConfig' => [
+            'template' => '{label}<div class="col-sm-10">{input}</div><div class="col-sm-10">{error}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+        ],
+
+//        'layout'=>'horizontal',
+//        'options' => ['class' => 'signup-form form-register1'],
+//        'fieldConfig' => [
+//            'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
+//            'horizontalCssClasses' => [
+//                'label' => 'col-sm-4',
+//                'offset' => 'col-sm-offset-4',
+//                'wrapper' => 'col-sm-8',
+//                'error' => '',
+//                'hint' => '',
+//            ],
+//        ],
+    ]); ?>
 
     <?php
     $operations = Operation::find()->all();
@@ -39,37 +59,35 @@ use kartik\datetime\DateTimePicker;
     $user = User::find()->all();
     $userItems = ArrayHelper::map($user, 'id', 'username');
 
-    $sField = 'row .col-md-4';
+    $sField = 'col-md-4';
+
+    $model->date ? $model->date : $model->date = time();
     ?>
 
-    <?= $form->field($model, 'date')->widget(DateTimePicker::className(), [
-//    <?= DateTimePicker::widget( [
-        'name' => 'transaction-date',
+    <?= $form->field($model, 'date')->widget(DatePicker::className(), [
+        'name' => 'date',
         'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
-        'options' => ['placeholder' => 'Ввод даты/времени...'],
-        'convertFormat' => true,
-//        'value' => function ($model) {
-//            return ($model->date) ? date("d.m.Y h:i", (integer)$model->date) : date("d.m.Y h:i", (integer)time());
-//        },
-        'value' => date("d.m.Y", (integer)time()),
-
+        'options' => [
+            'value' => date("d.m.Y", $model->date),
+        ],
+        'convertFormat' => false, // php and yii formats
         'pluginOptions' => [
-            'format' => 'dd.MM.yyyy hh:i',
+            'format' => 'dd.mm.yyyy',
             'autoclose' => true,
             'weekStart' => 1, //неделя начинается с понедельника
-//    'startDate' => '01.05.2015 00:00', //самая ранняя возможная дата
             'todayBtn' => true, //снизу кнопка "сегодня"
             'todayHighlight' => true, //подсветка текущей даты
-//            'initialDate' => date("d.m.Y h:i", time()),
-//            'initialDate' => time(),
+//            'initialDate' => date("d.m.Y", (integer)time()), //do not work in $form->field
         ]
     ]); ?>
 
     <?= $form->field($model, 'operation_id')->dropDownList($operationItems,
-        ['options' =>
-            ['2' => ['selected ' => true]],
-            ['prompt' => ''],
-            ['class' => $sField],
+        [
+            'prompt' => 'Выберите операцию ...',
+            'options' => [
+                '2' => ['selected ' => true],
+//                'class' => $sField,
+            ],
         ]);
     ?>
 
@@ -77,21 +95,37 @@ use kartik\datetime\DateTimePicker;
         ['prompt' => 'Выберите категорию ...',])
     ?>
 
-    <?= $form->field($model, 'account_id')->dropDownList($accountItems,
-        ['options' =>
-            ['1' => ['selected ' => true]],
-            ['prompt' => ''],
-            ['class' => $sField],
+    <?= $form->field($model, 'account_id_from')->dropDownList($accountItems,
+        [
+            'prompt' => 'Выберите Счет откуда ...',
+            'options' => [
+//                '1' => ['selected ' => true],
+//                'class' => $sField,
+            ],
+        ]);
+    ?>
+
+    <?= $form->field($model, 'account_id_to')->dropDownList($accountItems,
+        [
+            'prompt' => 'Выберите Счет куда ...',
+            'options' => [
+//                '2' => ['selected ' => true],
+//                'class' => $sField,
+            ],
         ]);
     ?>
 
     <?= $form->field($model, 'value')->textInput() ?>
 
     <?= $form->field($model, 'currency_id')->dropDownList($currencyItems,
-        ['options' =>
-            ['1' => ['selected ' => true]],
-            ['prompt' => ''],
-        ]);
+        [
+            'prompt' => 'Выберите валюту ...',
+            'options' => [
+                '1' => ['selected ' => true],
+//                'class' => $sField,
+            ],
+        ]
+    );
     ?>
 
     <?= $form->field($model, 'contragent_id')->dropDownList($contragentItems,
@@ -99,13 +133,16 @@ use kartik\datetime\DateTimePicker;
     ?>
 
     <?= $form->field($model, 'user_id')->dropDownList($userItems,
-        ['options' =>
-            ['1' => ['selected ' => true]],
-            ['prompt' => ''],
+        [
+            'prompt' => 'Выберите пользователя ...',
+            'options' => [
+                '1' => ['selected ' => true],
+//                'class' => $sField,
+            ],
         ]);
     ?>
 
-    <div class="form-group">
+    <div class="form-group" class="col-lg-offset-6 col-lg-11">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 

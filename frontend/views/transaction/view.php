@@ -7,13 +7,17 @@ use common\models\helpers\Helper;
 /* @var $this yii\web\View */
 /* @var $model common\models\Transaction */
 
-$this->title = $model->id;
+$this->title = 'Транзакция ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Транзакции', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaction-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <p>
+        <?= Html::a('Создать новую транзакцию', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+<!--    <h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
 
     <p>
         <?= Html::a('Обновить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -49,9 +53,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'account_id',
+                'attribute' => 'account_id_from',
                 'value' => function ($model) {
-                    return $model->account->name;
+                    return $model->accountFrom->name;
+                }
+            ],
+            [
+                'attribute' => 'account_id_to',
+                'value' => function ($model) {
+                    return $model->accountTo->name;
                 }
             ],
             'value',

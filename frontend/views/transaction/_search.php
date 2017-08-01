@@ -23,7 +23,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'category_id') ?>
 
-    <?= $form->field($model, 'account_id') ?>
+    <?= $form->field($model, 'account_id_from') ?>
+
+    <?= $form->field($model, 'account_id_to') ?>
 
     <?php // echo $form->field($model, 'value') ?>
 

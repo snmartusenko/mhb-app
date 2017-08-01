@@ -14,12 +14,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaction-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
         <?= Html::a('Создать транзакцию', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -45,9 +46,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'account_id',
+                'attribute' => 'account_id_from',
                 'value' => function ($model) {
-                    return $model->account->name;
+                    return $model->accountFrom->name;
+                }
+            ],
+            [
+                'attribute' => 'account_id_to',
+                'value' => function ($model) {
+                    return $model->accountTo->name;
                 }
             ],
              'value',

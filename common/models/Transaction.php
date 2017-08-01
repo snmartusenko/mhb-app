@@ -70,6 +70,29 @@ class Transaction extends \yii\db\ActiveRecord
                     return $value;
                 }
             }],
+            [['account_id_to'], 'required',
+                'when' => function ($model) {
+                    return $model->operation_id == Operation::TYPE_INCOME_VALUE;
+                },
+                'enableClientValidation' => true,
+                'whenClient' => "function (attribute, value) { return $('#transaction-operation_id').val() == 1;}",
+            ],
+            [['account_id_from'], 'required',
+                'when' => function ($model) {
+                    return $model->operation_id == Operation::TYPE_EXPENSE_VALUE;
+                },
+                'enableClientValidation' => true,
+                'whenClient' => "function (attribute, value) { return $('#transaction-operation_id').val() == 2;}",
+            ],
+            [['account_id_from', 'account_id_to'], 'required',
+                'when' => function ($model) {
+                    return $model->operation_id == Operation::TYPE_TRANSFER_VALUE;
+                },
+                'enableClientValidation' => true,
+                'whenClient' => "function (attribute, value) { return $('#transaction-operation_id').val() == 3;}",
+            ],
+            ['account_id_to', 'compare', 'compareAttribute' => 'account_id_from', 'operator' => '!='],
+
 
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['account_id_from'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id_from' => 'id']],
