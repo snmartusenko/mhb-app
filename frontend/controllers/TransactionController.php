@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\forms\TransactionExpenseForm;
 use common\models\forms\TransactionIncomeForm;
 use common\models\forms\TransactionTransferForm;
 use common\models\Transaction;
@@ -91,6 +92,25 @@ class TransactionController extends Controller
             return $this->redirect(['index']);
         } else {
             return $this->render('createIncome', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Creates a new TransactionExpenseForm model.
+     * If creation is successful, the browser will be redirected to the 'index' page.
+     * @return mixed
+     */
+    public function actionCreateExpense()
+    {
+        /** @var TransactionExpenseForm $model */
+        $model = new TransactionExpenseForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('createExpense', [
                 'model' => $model,
             ]);
         }
