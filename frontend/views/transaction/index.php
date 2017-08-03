@@ -14,18 +14,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaction-index">
 
-    <p>
-        <?= Html::a('Создать транзакцию', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?= Html::a('Создать транзакцию', ['create'], ['class' => 'btn btn-success']) ?>
 
-    <p>
-        <?= Html::a('Записать Перемещение', ['create-transfer'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?= Html::a('Записать Перемещение', ['create-transfer'], ['class' => 'btn btn-success']) ?>
+
+    <?= Html::a('Записать Приход', ['create-income'], ['class' => 'btn btn-success']) ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+    <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -61,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->accountTo->name;
                 }
             ],
-             'value',
+            'value',
             [
                 'attribute' => 'currency_id',
                 'value' => function ($model) {
@@ -85,4 +83,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+    <?php Pjax::end(); ?></div>
