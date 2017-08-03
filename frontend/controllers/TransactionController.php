@@ -2,9 +2,11 @@
 
 namespace frontend\controllers;
 
-use Yii;
+use common\models\forms\TransactionTransferForm;
 use common\models\Transaction;
 use common\models\TransactionSearch;
+
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,6 +71,25 @@ class TransactionController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Creates a new TransactionTransferForm model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreateTransfer()
+    {
+        /** @var TransactionTransferForm $model */
+        $model = new TransactionTransferForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('createTransfer', [
                 'model' => $model,
             ]);
         }
