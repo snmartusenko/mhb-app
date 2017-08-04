@@ -76,7 +76,12 @@ use kartik\date\DatePicker;
     ]); ?>
 
     <?= $form->field($model, 'category_id')->dropDownList($categoryItems,
-        ['prompt' => 'Выберите категорию ...',])
+        [
+            'prompt' => 'Выберите категорию ...',
+            'options' => [
+                '1' => ['selected ' => true],
+            ],
+        ])
     ?>
 
     <?= $form->field($model, 'account_id_to')->dropDownList($accountItems,
@@ -114,7 +119,7 @@ use kartik\date\DatePicker;
     ?>
 
     <div class="form-group" class="col-lg-offset-6 col-lg-11">
-<!--        --><?//= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <!--        --><? //= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         <?= Html::submitButton('Создать', ['class' => 'btn btn-success']) ?>
     </div>
 

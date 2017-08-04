@@ -26,7 +26,6 @@ class TransactionExpenseForm extends Model
     public $date;
     public $category_id;
     public $account_id_from;
-    public $account_id_to;
     public $value;
     public $currency_id;
     public $contragent_id;
@@ -41,8 +40,7 @@ class TransactionExpenseForm extends Model
         return [
             [['date', 'category_id', 'value', 'currency_id', 'user_id'], 'required'],
             [['date'], 'safe'],
-            [['id', 'category_id', 'account_id_from', 'account_id_to',
-                'value', 'currency_id', 'contragent_id', 'user_id', 'created_at'], 'integer'],
+            [['id', 'category_id', 'account_id_from', 'value', 'currency_id', 'contragent_id', 'user_id', 'created_at'], 'integer'],
 
             [['date'], 'filter', 'filter' => function ($value) {
                 if (!preg_match("/^[\d\+]+$/", $value) && $value > 0) {
@@ -56,7 +54,6 @@ class TransactionExpenseForm extends Model
 
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['account_id_from'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id_from' => 'id']],
-            [['account_id_to'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id_to' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['contragent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contragent::className(), 'targetAttribute' => ['contragent_id' => 'id']],
             [['currency_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
@@ -72,6 +69,7 @@ class TransactionExpenseForm extends Model
         return [
             'id' => 'ID',
             'date' => 'Дата',
+            'category_id' => 'Категория',
             'account_id_from' => 'Счет откуда',
             'value' => 'Сумма',
             'currency_id' => 'Валюта',

@@ -12,7 +12,7 @@ use kartik\datetime\DateTimePicker;
 use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Transaction */
+/* @var $model common\models\forms\TransactionTransferForm */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -40,9 +40,6 @@ use kartik\date\DatePicker;
     ]); ?>
 
     <?php
-    $category = Category::find()->all();
-    $categoryItems = ArrayHelper::map($category, 'id', 'name');
-
     $account = Account::find()->all();
     $accountItems = ArrayHelper::map($account, 'id', 'name');
 
@@ -74,10 +71,6 @@ use kartik\date\DatePicker;
 //            'initialDate' => date("d.m.Y", (integer)time()), //do not work in $form->field
         ]
     ]); ?>
-
-    <?= $form->field($model, 'category_id')->dropDownList($categoryItems,
-        ['prompt' => 'Выберите категорию ...',])
-    ?>
 
     <?= $form->field($model, 'account_id_from')->dropDownList($accountItems,
         [

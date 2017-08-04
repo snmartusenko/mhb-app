@@ -28,6 +28,14 @@ class Category extends ActiveRecord
     const STATUS_ACTIVE_LABEL = 'Активная';
     const STATUS_DELETED_LABEL = 'Удаленная';
 
+    const GENERAL_INCOME_VALUE = 1;
+    const GENERAL_EXPENSE_VALUE = 2;
+    const GENERAL_TRANSFER_VALUE = 3;
+
+    const GENERAL_INCOME_LABEL = '(общий)';
+    const GENERAL_EXPENSE_LABEL = '(общий)';
+    const GENERAL_TRANSFER_LABEL = '(общее)';
+
     /**
      * @inheritdoc
      */

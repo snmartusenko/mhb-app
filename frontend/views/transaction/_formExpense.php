@@ -76,7 +76,12 @@ use kartik\date\DatePicker;
     ]); ?>
 
     <?= $form->field($model, 'category_id')->dropDownList($categoryItems,
-        ['prompt' => 'Выберите категорию ...',])
+        [
+            'prompt' => 'Выберите категорию ...',
+            'options' => [
+                '2' => ['selected ' => true],
+            ]
+        ])
     ?>
 
     <?= $form->field($model, 'account_id_from')->dropDownList($accountItems,
