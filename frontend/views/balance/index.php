@@ -19,13 +19,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
-            'account_id',
+            [
+                'attribute' => 'account_id',
+                'value' => function ($model) {
+                    return $model->account->name;
+                }
+            ],
             'income',
             'expense',
             'current',
             // 'accounting_datetime:datetime',
 
-//            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],
         ],
     ]); ?>
 </div>

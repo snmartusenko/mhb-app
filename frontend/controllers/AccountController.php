@@ -5,6 +5,8 @@ namespace frontend\controllers;
 use Yii;
 use common\models\Account;
 use common\models\AccountSearch;
+use common\models\Balance;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,14 +66,19 @@ class AccountController extends Controller
     public function actionCreate()
     {
         $model = new Account();
+        $balanceModel = new Balance();
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if ($model->load($post) && $model->save())
+        {
+            $balanceModel->account_id = $model->id;
+            if ($balanceModel->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -101,7 +108,9 @@ class AccountController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->status = Account::STATUS_DELETED_VALUE;
+        $model->save();
 
         return $this->redirect(['index']);
     }

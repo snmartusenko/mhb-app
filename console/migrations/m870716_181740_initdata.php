@@ -77,6 +77,14 @@ class m870716_181740_initdata extends Migration
                 [2, 'Расход', 10, 1500708122],
                 [3, 'Перемещение', 10, 1500708122],
             ])->execute();
+
+        Yii::$app->db->createCommand()->batchInsert('balance',
+            ['id', 'account_id', 'income', 'expense', 'current', 'accounting_datetime'],
+            [
+                [1, 1, 0, 0, 0, 1500708122],
+                [2, 2, 0, 0, 0, 1500708122],
+                [3, 3, 0, 0, 0, 1500708122],
+            ])->execute();
     }
 
     public function down()

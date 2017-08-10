@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "balance".
@@ -24,6 +26,18 @@ class Balance extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'balance';
+    }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['accounting_datetime'],
+                ],
+            ],
+        ];
     }
 
     /**
