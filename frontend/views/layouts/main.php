@@ -47,10 +47,11 @@ AppAsset::register($this);
     } else {
         $menuItems = [
             ['label' => 'Главная', 'url' => ['/site/index']],
-            ['label' => 'Счета', 'url' => ['/account/index']],
             ['label' => 'Транзакции', 'url' => ['/transaction/index']],
+            ['label' => 'Баланс', 'url' => ['/balance/index']],
             ['label' => 'Справочники',
                 'items' => [
+                    ['label' => 'Счета', 'url' => ['/account/index']],
                     ['label' => 'Категории', 'url' => ['/category/index']],
                     ['label' => 'Контрагенты', 'url' => ['/contragent/index']],
                     ['label' => 'Валюты', 'url' => ['/currency/index']],

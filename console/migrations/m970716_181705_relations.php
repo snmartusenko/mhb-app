@@ -45,6 +45,10 @@ class m970716_181705_relations extends Migration
         //category->operation
         $this->createIndex('fk_category_operation_idx', '{{%category}}', 'operation_id');
         $this->addForeignKey('fk_category_operation', '{{%category}}', 'operation_id', '{{%operation}}', 'id');
+
+        //balance->account
+        $this->createIndex('fk_balance_account_idx', '{{%balance}}', 'account_id');
+        $this->addForeignKey('fk_balance_account', '{{%balance}}', 'account_id', '{{%account}}', 'id');
     }
 
     public function down()
@@ -78,5 +82,9 @@ class m970716_181705_relations extends Migration
         //category->operation
         $this->dropForeignKey('fk_category_operation', '{{%category}}');
         $this->dropIndex('fk_category_operation_idx', '{{%category}}');
+
+        //transaction->account
+        $this->dropForeignKey('fk_balance_account', '{{%balance}}');
+        $this->dropIndex('fk_balance_account_idx', '{{%balance}}');
     }
 }
