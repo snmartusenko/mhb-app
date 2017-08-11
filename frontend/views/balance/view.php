@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\helpers\Helper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Balance */
@@ -27,7 +28,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'income',
             'expense',
             'current',
-            'accounting_datetime:datetime',
+            [
+                'label' => 'Дата проводки',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Helper::getDate($model->accounting_datetime);
+                },
+            ],
+            [
+                'label' => 'Время проводки',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Helper::getTime($model->accounting_datetime);
+                },
+            ],
         ],
     ]) ?>
 

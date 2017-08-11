@@ -56,6 +56,19 @@ class BalanceController extends Controller
         ]);
     }
 
+    public function actionUpdate()
+    {
+        Balance::updateAllBalance();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Balance::find(),
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Finds the Balance model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
