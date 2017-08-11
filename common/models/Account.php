@@ -15,7 +15,8 @@ use common\models\helpers\Helper;
  * @property integer $status
  * @property integer $created_at
  *
- * @property Transaction[] $transactions
+ * @property Transaction[] $incomeTransactions
+ * @property Transaction[] $expenseTransactions
  */
 class Account extends ActiveRecord
 {
@@ -77,9 +78,17 @@ class Account extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTransactions()
+    public function getIncomeTransactions()
     {
-        return $this->hasMany(Transaction::className(), ['account_id' => 'id']);
+        return $this->hasMany(Transaction::className(), ['account_id_to' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExpenseTransactions()
+    {
+        return $this->hasMany(Transaction::className(), ['account_id_from' => 'id']);
     }
 
     /**

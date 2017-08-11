@@ -17,6 +17,8 @@ use yii\db\ActiveRecord;
  * @property integer $accounting_datetime
  *
  * @property Account $account
+ * @property Transaction[] $incomeTransactions
+ * @property Transaction[] $expenseTransactions
  */
 class Balance extends \yii\db\ActiveRecord
 {
@@ -34,7 +36,7 @@ class Balance extends \yii\db\ActiveRecord
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['accounting_datetime'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['accounting_datetime'],
                 ],
             ],
         ];
@@ -72,5 +74,94 @@ class Balance extends \yii\db\ActiveRecord
     public function getAccount()
     {
         return $this->hasOne(Account::className(), ['id' => 'account_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIncomeTransactions()
+    {
+        return $this->hasMany(Transaction::className(), ['account_id_to' => 'account_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExpenseTransactions()
+    {
+        return $this->hasMany(Transaction::className(), ['account_id_from' => 'account_id']);
+    }
+
+    /**
+     * @return bool|null
+     */
+    public static function updateAllBalance()
+    {
+        $models = self::find()->all();
+        if ($models) {
+            foreach ($models as $model) {
+                /** @var self $model */
+                if (!$model->updateBalance()){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return null;
+    }
+
+    public function updateBalance()
+    {
+        $income = $this->countIncome();
+        $expense = $this->countExpense();
+        $current = $income - $expense;
+
+        if ($this->load([
+                $this->formName() =>
+                    [
+                        'income' => $income,
+                        'expense' => $expense,
+                        'current' => $current,
+                    ]
+            ]) && $this->save()
+        ) {
+            return $this;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function countIncome()
+    {
+        $transactions = $this->incomeTransactions;
+
+        if ($transactions) {
+            $value = 0;
+            foreach ($transactions as $transaction) {
+                $value += $transaction->value;
+            }
+            return $value;
+        }
+        return null;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function countExpense()
+    {
+        $transactions = $this->expenseTransactions;
+
+        if ($transactions) {
+            $value = 0;
+            foreach ($transactions as $transaction) {
+                $value += $transaction->value;
+            }
+            return $value;
+        }
+        return null;
     }
 }
