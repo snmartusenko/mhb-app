@@ -9,27 +9,49 @@
 namespace common\models\helpers;
 
 use Yii;
-use yii\base\Model;
 
 class Helper
 {
     /**
      * for formatting of date
-     * @param $date
+     * @param $value
      * @return string
      */
-    public static function getDate($date)
+    public static function getDate($value)
     {
 //        Yii::$app->formatter->timeZone = 'UTC';// эта запись устанавливает часовой пояс такой же как на сервере
         Yii::$app->formatter->locale = 'ru-RU';
-        return Yii::$app->formatter->asDatetime($date, "php:d.m.Y, l");
+        return Yii::$app->formatter->asDatetime($value, "php:d.m.Y");
 //        return Yii::$app->formatter->asDate($date, 'l,  d.MM.Y');
     }
 
     /**
-     * @return null|string
+     * for formatting of time
+     * @param $value
+     * @return string
      */
-    public static function getModelStatusLabel(Model $model)
+    public static function getTime($value)
+    {
+        Yii::$app->formatter->locale = 'ru-RU';
+        return Yii::$app->formatter->asDatetime($value, "php:H:i:s");
+    }
+
+    /**
+     * for formatting of datetime
+     * @param $value
+     * @return string
+     */
+    public static function getDateTime($value)
+    {
+        Yii::$app->formatter->locale = 'ru-RU';
+        return Yii::$app->formatter->asDatetime($value, "php:d.m.Y / H:i:s");
+    }
+
+    /**
+     * @return null|string
+     * @var $model
+     */
+    public static function getModelStatusLabel($model)
     {
         switch ($model->status) {
             case $model::STATUS_ACTIVE_VALUE:
